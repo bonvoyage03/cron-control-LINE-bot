@@ -9,6 +9,7 @@ from google.oauth2 import service_account
 from googleapiclient.http import MediaIoBaseUpload
 import io
 import os
+import logging
 
 # ----------------------------
 # Google Drive Config
@@ -46,6 +47,12 @@ handler = WebhookHandler(CHANNEL_SECRET)
 
 app = FastAPI()
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger(__name__)
+
 # ----------------------------
 # LINE Webhook Endpoint
 # ----------------------------
@@ -54,7 +61,15 @@ async def callback(request: Request):
     body = await request.body()
     body_str = body.decode("utf-8")
     signature = request.headers.get("X-Line-Signature", "")
-    handler.handle(body_str, signature)
+
+    logger.info("Received request: %s", body_str)
+    logger.info("X-Line-Signature: %s", signature)
+
+    try:
+        handler.handle(body_str, signature)
+    except Exception as e:
+        logger.exception("Handler error")
+
     return "OK"
 
 # ----------------------------
