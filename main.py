@@ -75,7 +75,7 @@ async def callback(request: Request):
 # ----------------------------
 # Message Event Handling
 # ----------------------------
-@handler.add(MessageEvent, message=TextMessage)
+@handler.add(MessageEvent)
 def handle_message(event):
     text = event.message.text.lower()
     if text == "on":
