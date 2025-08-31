@@ -53,7 +53,7 @@ app = FastAPI()
 async def callback(request: Request):
     body = await request.body()
     signature = request.headers.get("X-Line-Signature", "")
-    handler.handle(body.decode("utf-8"), signature)
+    handler.handle(body, signature)
     return "OK"
 
 # ----------------------------
