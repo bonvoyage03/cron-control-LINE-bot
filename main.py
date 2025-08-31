@@ -70,7 +70,7 @@ def handle_message(event):
         reply = "CronJob is OFF"
     else:
         reply = "Available commands: on / off"
-    line_bot_api.reply_message_v2(
+    line_bot_api.reply_message(
         reply_message_request=ReplyMessageRequest(
             reply_token=event.reply_token,
             messages=[
